@@ -44,6 +44,10 @@ Upload the <strong><a href="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Le
 <br />
 Run:<br />
 ```bash
+sudo apt-get update
+sudo apt-get install git -y
+git clone --depth 1 https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera.git
+cd Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera
 chmod +xr setupleptonrpi.sh
 sudo ./setupleptonrpi.sh
 ```
