@@ -49,15 +49,15 @@ Wait for the script to install everything and it will reboot itself. If you conn
 <table>
   <thead>
     <tr>
-      <th>Raspberry Pi pin (physical / signal)</th>
       <th>Lepton Breakout V2 pin</th>
+      <th>Raspberry Pi pin (physical / signal)</th>
       <th>RCA Connector</th>
     </tr>
   </thead>
   <tbody>
     <tr>
+      <td>VIN</td>
       <td>3.3V</td>
-      <td>VIN (3.3V)</td>
       <td></td>
     </tr>
     <tr>
@@ -66,48 +66,48 @@ Wait for the script to install everything and it will reboot itself. If you conn
       <td></td>
     </tr>
     <tr>
+      <td>CLK</td>
       <td>GPIO11</td>
-      <td>CLK (SCK)</td>
       <td></td>
     </tr>
     <tr>
+      <td>MISO</td>
       <td>GPIO9</td>
-      <td>MISO (DO)</td>
       <td></td>
     </tr>
     <tr>
+      <td>MOSI</td>
       <td>GPIO10</td>
-      <td>MOSI (DI)</td>
       <td></td>
     </tr>
     <tr>
-      <td>GPIO8</td>
       <td>CS</td>
+      <td>GPIO8</td>
       <td></td>
     </tr>
     <tr>
-      <td>GPIO2</td>
       <td>SDA</td>
+      <td>GPIO2</td>
       <td></td>
     </tr>
     <tr>
-      <td>GPIO3</td>
       <td>SCL</td>
+      <td>GPIO3</td>
       <td></td>
     </tr>
     <tr>
-      <td>GPIO17</td>
       <td>VSYNC</td>
+      <td>GPIO17</td>
       <td></td>
     </tr>
     <tr>
-      <td>TV OUT</td>
       <td></td>
+      <td>TV OUT</td>
       <td>RCA center pin = composite video signal</td>
     </tr>
     <tr>
-      <td>GND</td>
       <td></td>
+      <td>GND</td>
       <td>RCA shield = ground</td>
     </tr>
   </tbody>
