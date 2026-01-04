@@ -44,5 +44,72 @@ sudo ./setupleptonrpi.sh
 ```
 Wait for the script to install everything and it will reboot itself. If you connect everything right, you will see the thermal image video on your screen in about 13-15s after the boot.
 
-## Wiring
-TBA
+## Pinout
+
+<table>
+  <thead>
+    <tr>
+      <th>Raspberry Pi pin (physical / signal)</th>
+      <th>Lepton Breakout V2 pin</th>
+      <th>RCA Connector</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.3V</td>
+      <td>VIN (3.3V)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GND</td>
+      <td>GND</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO11</td>
+      <td>CLK (SCK)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO9</td>
+      <td>MISO (DO)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO10</td>
+      <td>MOSI (DI)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO8</td>
+      <td>CS</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO2</td>
+      <td>SDA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO3</td>
+      <td>SCL</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPIO17</td>
+      <td>VSYNC</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>TV OUT</td>
+      <td></td>
+      <td>RCA center pin = composite video signal</td>
+    </tr>
+    <tr>
+      <td>GND</td>
+      <td></td>
+      <td>RCA shield = ground</td>
+    </tr>
+  </tbody>
+</table>
+
