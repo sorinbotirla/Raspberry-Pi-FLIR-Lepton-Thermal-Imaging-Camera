@@ -143,3 +143,8 @@ Example of the TV pins which were used in this project (RPI Zero 2W)
     </td>
   </tr>
 </table>
+
+## Why Composite video instead of HDMI?
+
+Composite video requires only 2 wire connection which can be handled over a long distance, even more than 10-20m without too much interference. A thin coax cable will work better for even longer distances (50-200m). A hdmi cable is more sensible to interference and
+cannot run well for long distances. The composite (CVBS) connection can replace even an existing cctv camera, or a car front/rear camera.
