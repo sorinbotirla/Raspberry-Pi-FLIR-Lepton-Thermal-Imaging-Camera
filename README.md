@@ -5,11 +5,11 @@ A Thermal Imaging camera built on Raspberry Pi and FLIR Lepton module
   <tr style="border: 0;">
     <td width="50%" valign="top" style="vertical-align: top;">
       <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/inside.gif" />
-      <div>Indoor thermal imaging (person waving hand) close distance</div>
+      <div>Indoor thermal imaging (person waving hand) close distance, grey background</div>
     </td>
     <td width="50%" valign="top" style="vertical-align: top;">
       <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/outside.gif" />
-      <div>Outdoor thermal imaging (city buildings, streets and cars) medium-long distance</div>
+      <div>Outdoor thermal imaging (city buildings, streets and cars) medium-long distance, grey background</div>
     </td>
   </tr>
 </table>
@@ -52,6 +52,8 @@ chmod +xr setupleptonrpi.sh
 sudo ./setupleptonrpi.sh --blackbackground
 sudo ./setupleptonrpi.sh --greybackground
 ```
+NOTE: The black background parameter is more suitable for detecting heat sources, while the grey background is more suitable for finer details, including more surrounding awareness.
+
 Wait for the script to install everything and it will reboot itself. If you connect everything right, you will see the thermal image video on your screen in about 13-15s after the boot.
 
 ## Pinout
