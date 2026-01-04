@@ -48,7 +48,9 @@ sudo apt-get install git -y
 git clone --depth 1 https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera.git
 cd Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera
 chmod +xr setupleptonrpi.sh
-sudo ./setupleptonrpi.sh
+# Choose between one of the following for black or grey background
+sudo ./setupleptonrpi.sh --blackbackground
+sudo ./setupleptonrpi.sh --greybackground
 ```
 Wait for the script to install everything and it will reboot itself. If you connect everything right, you will see the thermal image video on your screen in about 13-15s after the boot.
 
