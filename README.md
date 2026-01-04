@@ -165,4 +165,6 @@ Open source under MIT
 
 ## Copyrights
 
-FLIR, Teledyne, Lepton and their logos are trademarks registered and owned by Teledyne FLIR LLC
+FLIR, Teledyne, Lepton and their logos are trademarks registered and owned by Teledyne FLIR LLC<br />
+Raspberry Pi is a trademark of Raspberry Pi Ltd<br />
+HDMI (High-Definition Multimedia Interface) is a registered trademark of HDMI Licensing, LLC
