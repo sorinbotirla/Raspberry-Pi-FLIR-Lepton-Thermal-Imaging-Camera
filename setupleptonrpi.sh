@@ -190,7 +190,19 @@ else
 fi
 
 log "[8/10] Build..."
-sudo -u "$TARGET_USER" sh -c "cd '$APP_DIR' && qmake && make -j1"
+
+QMAKE_DEFINES=""
+
+if [ "$BACKGROUND_MODE" = "black" ]; then
+    QMAKE_DEFINES="BACKGROUND_DEFINES+=BLACK_BACKGROUND"
+fi
+
+sudo -u "$TARGET_USER" sh -c "
+    cd '$APP_DIR' &&
+    qmake $QMAKE_DEFINES &&
+    make -j1
+"
+
 [[ -x "$BIN_PATH" ]] || die "Build failed: $BIN_PATH not found."
 
 # Create the lepton view service
