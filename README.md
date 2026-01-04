@@ -159,6 +159,10 @@ Example of the TV pins which were used in this project (RPI Zero 2W)
 
 Composite video requires only two wires, which allows it to operate reliably over long distances, often exceeding 10 to 20 meters without significant interference. Using a thin coaxial cable enables even longer runs, typically between 50 and 200 meters. In comparison, HDMI cables are more sensitive to interference and do not perform well over long distances. Composite CVBS connections can directly replace existing CCTV cameras or automotive front and rear camera systems.
 
+## What this project doesn't do?
+
+The most important thing, it doesn't measure the temperature, lol :)
+
 ## License
 
 Open source under MIT
