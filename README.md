@@ -113,3 +113,16 @@ Wait for the script to install everything and it will reboot itself. If you conn
   </tbody>
 </table>
 
+<br />
+<table style="border: 0;">
+  <tr>
+    <td width="50%" style="vertical-align: top;">
+      <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/lepton-breakout-v2-pins.jpg" />
+      LEPTON Breakout V2 Pins
+    </td>
+    <td width="50%" style="vertical-align: top;">
+      <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/GPIO-Pinout-Diagram-2.png" />
+      Raspberry Pi GPIO Pins
+    </td>
+  </tr>
+</table>
