@@ -44,10 +44,10 @@ int main(int argc, char **argv)
         layout->setSpacing(0);
 
         MyLabel *label = new MyLabel(w);
-        myLabel->setLogo(
-            "/home/lufy/LeptonModule/software/raspberrypi_video/flir_logo.png",
+        label->setLogo(
+            "flir_logo.png",
             85,  // height
-            40   // margin from edges in pixels
+            60   // margin from edges in pixels
         );
         layout->addWidget(label);
 
