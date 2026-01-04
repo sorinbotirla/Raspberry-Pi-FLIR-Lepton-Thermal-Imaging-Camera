@@ -40,7 +40,6 @@ Choose <strong>Raspberry Pi OS (other) > Raspberry Pi OS (Legacy, 32-Bit) Lite</
 Set up your WiFi Connection if needed and enable SSH <strong color="red">(You won't get direct console login on the screeen, login will only be available on SSH if you enable it during this process)</strong>.<br />
 Write the SDCard<br />
 Boot the raspberry Pi and login trough SSH<br />
-Upload the <strong><a href="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/blob/main/setupleptonrpi.sh">setupleptonrpi.sh</a></strong> script in <strong>/home/youruser/</strong><br />
 <br />
 Run:<br />
 ```bash
