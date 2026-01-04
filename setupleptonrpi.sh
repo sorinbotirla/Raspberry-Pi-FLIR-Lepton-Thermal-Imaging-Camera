@@ -199,6 +199,9 @@ fi
 
 sudo -u "$TARGET_USER" sh -c "
     cd '$APP_DIR' &&
+    make distclean >/dev/null 2>&1 || true &&
+    rm -f Makefile .qmake.stash &&
+    rm -rf gen_objs gen_mocs &&
     qmake $QMAKE_DEFINES &&
     make -j1
 "
