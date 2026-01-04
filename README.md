@@ -17,6 +17,9 @@ A Thermal Imaging camera built on Raspberry Pi and FLIR Lepton module
 ## Credits to the Original Authors of the code
 This repository uses the raspberry_video from the <a href="https://github.com/groupgets/LeptonModule/tree/master/software/raspberrypi_video" target="_blank">LeptonModule repository - by groupgets</a>
 
+## What does the <a href="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/blob/main/setupleptonrpi.sh">setupleptonrpi.sh</a> script do?
+This script automatically prepares a Raspberry Pi to run a FLIR Lepton thermal camera without a desktop environment. It configures the system to use framebuffer video output instead of HDMI or a window manager. The script enables the required hardware interfaces and installs all needed software dependencies. It downloads the thermal camera software, applies stability fixes, and builds it for the current Raspberry Pi. The display is configured for stable composite video output without boot messages on screen. A background service is installed so the camera starts automatically on every boot. The script can be safely run on a fresh system or on an existing installation. After completion, the device boots directly into a stable thermal camera view.
+
 ## Bill of Materials (BOM / Components required)
 You will need:
 <ul>
@@ -37,7 +40,7 @@ Choose <strong>Raspberry Pi OS (other) > Raspberry Pi OS (Legacy, 32-Bit) Lite</
 Set up your WiFi Connection if needed and enable SSH <strong color="red">(You won't get direct console login on the screeen, login will only be available on SSH if you enable it during this process)</strong>.<br />
 Write the SDCard<br />
 Boot the raspberry Pi and login trough SSH<br />
-Upload the <strong>setupleptonrpi.sh</strong> script in <strong>/home/youruser/</strong><br />
+Upload the <strong><a href="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/blob/main/setupleptonrpi.sh">setupleptonrpi.sh</a></strong> script in <strong>/home/youruser/</strong><br />
 <br />
 Run:<br />
 ```bash
