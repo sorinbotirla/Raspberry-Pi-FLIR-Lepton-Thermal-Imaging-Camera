@@ -15,7 +15,7 @@ A Thermal Imaging camera built on Raspberry Pi and FLIR Lepton module
 </table>
 
 ## Credits to the Original Authors of the code
-This repository uses the raspberry_video from the <a href="https://github.com/groupgets/LeptonModule/tree/master/software/raspberrypi_video">LeptonModule repository - by groupgets</a>
+This repository uses the raspberry_video from the <a href="https://github.com/groupgets/LeptonModule/tree/master/software/raspberrypi_video" target="_blank">LeptonModule repository - by groupgets</a>
 
 ## Bill of Materials (BOM / Components required)
 You will need:
