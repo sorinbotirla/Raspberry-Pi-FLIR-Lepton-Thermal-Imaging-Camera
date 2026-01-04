@@ -162,3 +162,7 @@ Composite video requires only two wires, which allows it to operate reliably ove
 ## License
 
 Open source under MIT
+
+## Copyrights
+
+FLIR, Teledyne, Lepton and their logos are trademarks registered and copyrighted by Teledyne FLIR LLC
