@@ -5,9 +5,11 @@ A Thermal Imaging camera built on Raspberry Pi and FLIR Lepton module
   <tr style="border: 0;">
     <td width="50%" valign="top" style="vertical-align: top;">
       <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/inside.gif" />
+      <div>Indoor thermal imaging (person waving hand)</div>
     </td>
     <td width="50%" valign="top" style="vertical-align: top;">
       <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/outside.gif" />
+      <div>Outdoor thermal imaging (city buildings, streets and cars)</div>
     </td>
   </tr>
 </table>
