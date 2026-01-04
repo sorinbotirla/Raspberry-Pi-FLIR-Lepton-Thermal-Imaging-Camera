@@ -24,7 +24,7 @@ This script automatically prepares a Raspberry Pi to run a FLIR Lepton thermal c
 You will need:
 <ul>
   <li>Raspberry Pi (zero, zero 2w, pi2, pi3, pi4, pi5, cm)</li>
-  <li>FLIR Lepton module 2.X, 3.X (2.0, 2.5, 3.0, 3.5)</li>
+  <li>FLIR Lepton module 2.X, 3.X (2.0, 2.5, 3.0, 3.5)<a href="https://www.sparkfun.com/flir-radiometric-lepton-dev-kit-v2.html" target="_blank">Sparkfun</a></li>
   <li>FLIR Lepton Breakout Board (V2 used in this project but others might work too - untested) <a href="https://www.sparkfun.com/flir-lepton-breakout-board-v2.html" target="_blank">Sparkfun</a></li>
   <li>RCA Connector (for composite cvbs video) or HDMI cable</li>
   <li>Wires to solder</li>
