@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+BACKGROUND_MODE="black"
+
+for arg in "$@"; do
+    case "$arg" in
+        --blackbackground)
+            BACKGROUND_MODE="black"
+            ;;
+        --greybackground)
+            BACKGROUND_MODE="grey"
+            ;;
+    esac
+done
+
 # Configs
 REPO_URL="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera.git"
 REPO_DIRNAME="Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera"
