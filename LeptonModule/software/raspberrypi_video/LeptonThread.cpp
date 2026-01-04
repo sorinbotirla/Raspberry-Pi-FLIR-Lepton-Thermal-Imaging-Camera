@@ -249,15 +249,20 @@ void LeptonThread::run()
 				int ofs_b = 3 * value + 2; if (colormapSize <= ofs_b) ofs_b = colormapSize - 1;
 				color = qRgb(colormap[ofs_r], colormap[ofs_g], colormap[ofs_b]);
 
-				// Make grayscale pixels black, keep colored pixels as-is
-				int r = qRed(color);
-				int g = qGreen(color);
-				int b = qBlue(color); // If the pixel is near-gray (low chroma), force it to black.
-				// Threshold controls how strict "gray" is. Start with 8.
-				int blackAmount = 4;
-				if (abs(r - g) <= blackAmount && abs(g - b) <= blackAmount && abs(r - b) <= blackAmount) {
-				    color = qRgb(0, 0, 0);
-				}
+                // Make grayscale pixels black, keep colored pixels as-is
+                #ifdef BLACK_BACKGROUND
+                int r = qRed(color);
+                int g = qGreen(color);
+                int b = qBlue(color);
+
+                int blackAmount = 4;
+
+                if (abs(r - g) <= blackAmount &&
+                    abs(g - b) <= blackAmount &&
+                    abs(r - b) <= blackAmount) {
+                    color = qRgb(0, 0, 0);
+                }
+                #endif
 
 				if (typeLepton == 3) {
 					column = (i % PACKET_SIZE_UINT16) - 2 + (myImageWidth / 2) * ((i % (PACKET_SIZE_UINT16 * 2)) / PACKET_SIZE_UINT16);
