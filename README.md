@@ -165,4 +165,4 @@ Open source under MIT
 
 ## Copyrights
 
-FLIR, Teledyne, Lepton and their logos are trademarks registered and copyrighted by Teledyne FLIR LLC
+FLIR, Teledyne, Lepton and their logos are trademarks registered and owned by Teledyne FLIR LLC
