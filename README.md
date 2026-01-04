@@ -131,3 +131,15 @@ Wait for the script to install everything and it will reboot itself. If you conn
     </td>
   </tr>
 </table>
+<br />
+Example of the TV pins which were used in this project (RPI Zero 2W)
+<table>
+  <tr>
+    <td width="70%" valign="top">
+      <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/zero2-pad-diagram.png" />
+    </td>
+    <td width="30%" valign="top">
+      <img src="https://raw.githubusercontent.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/refs/heads/main/images/20260104_061112.jpg" />
+    </td>
+  </tr>
+</table>
