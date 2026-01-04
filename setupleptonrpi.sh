@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # Configs
-REPO_URL="${REPO_URL:-https://github.com/groupgets/LeptonModule.git}"
-REPO_DIRNAME="${REPO_DIRNAME:-LeptonModule}"
-APP_SUBDIR="software/raspberrypi_video"
+REPO_URL="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera.git"
+REPO_DIRNAME="Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera"
+APP_SUBDIR="LeptonModule/software/raspberrypi_video"
 SERVICE_NAME="lepton-view.service"
 
 # Composite / overscan (override by exporting vars before running)
@@ -56,9 +56,19 @@ fi
 TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
 [[ -n "$TARGET_HOME" && -d "$TARGET_HOME" ]] || die "Target home not found for $TARGET_USER: $TARGET_HOME"
 
-INSTALL_DIR="$TARGET_HOME/$REPO_DIRNAME"
+INSTALL_DIR="/home/${TARGET_USER}/${REPO_DIRNAME}"
 APP_DIR="$INSTALL_DIR/$APP_SUBDIR"
 BIN_PATH="$APP_DIR/raspberrypi_video"
+
+# If the user already cloned the repo and runs this script from inside it,
+# prefer that working tree instead of cloning again.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -d "$SCRIPT_DIR/LeptonModule/software/raspberrypi_video" ]; then
+  INSTALL_DIR="$SCRIPT_DIR"
+  APP_DIR="$INSTALL_DIR/$APP_SUBDIR"
+  BIN_PATH="$APP_DIR/raspberrypi_video"
+fi
+
 
 # Clock skew error fix, well it might happen otherwise
 log "[1/10] Time sync..."
@@ -145,152 +155,29 @@ mkdir -p /tmp/runtime-root
 chown root:root /tmp/runtime-root
 chmod 0700 /tmp/runtime-root
 
-# Clone / update repo
+# Clone / update repo (only if we are not already running inside a cloned repo)
 log "[7/10] Repo: $REPO_URL"
-if [[ -d "$INSTALL_DIR/.git" ]]; then
-  sudo -u "$TARGET_USER" git -C "$INSTALL_DIR" fetch --all --prune
-
-  BRANCH="$(sudo -u "$TARGET_USER" git -C "$INSTALL_DIR" rev-parse --abbrev-ref HEAD)"
-  # If HEAD is detached or branch lookup fails, fall back to master/main later
-  if [[ -z "$BRANCH" || "$BRANCH" == "HEAD" ]]; then
-    BRANCH="master"
-    sudo -u "$TARGET_USER" git -C "$INSTALL_DIR" show-ref --verify --quiet refs/remotes/origin/main && BRANCH="main"
-  fi
-
-  sudo -u "$TARGET_USER" git -C "$INSTALL_DIR" reset --hard "origin/$BRANCH"
-  sudo -u "$TARGET_USER" git -C "$INSTALL_DIR" clean -fdx
+if [ "$INSTALL_DIR" = "$SCRIPT_DIR" ] && [ -d "$INSTALL_DIR/.git" ]; then
+  log "Repo already present at $INSTALL_DIR (running from inside the clone). Skipping git clone."
 else
-  sudo -u "$TARGET_USER" git clone "$REPO_URL" "$INSTALL_DIR"
+  if [ -d "$INSTALL_DIR" ]; then
+    log "Removing existing clone at $INSTALL_DIR ..."
+    rm -rf "$INSTALL_DIR"
+  fi
+  log "Cloning into $INSTALL_DIR ..."
+  git clone --depth 1 "$REPO_URL" "$INSTALL_DIR"
+  chown -R "$TARGET_USER:$TARGET_USER" "$INSTALL_DIR"
 fi
-[[ -d "$APP_DIR" ]] || die "Expected app dir missing: $APP_DIR"
 
-# Patch app (stable scaling + fullscreen + fb16 safety) or at least "It worked for me :)"
-log "[8/10] Write known-good sources + enforce fixes..."
-
-cat > "$APP_DIR/MyLabel.h" <<'EOF'
-#ifndef MYLABEL_H
-#define MYLABEL_H
-
-#include <QtCore>
-#include <QWidget>
-#include <QLabel>
-
-class MyLabel : public QLabel {
-  Q_OBJECT;
-
-  public:
-    MyLabel(QWidget *parent = 0);
-    ~MyLabel();
-
-  public slots:
-    void setImage(QImage);
-};
-
-#endif
-EOF
-
-cat > "$APP_DIR/MyLabel.cpp" <<'EOF'
-#include "MyLabel.h"
-
-MyLabel::MyLabel(QWidget *parent) : QLabel(parent)
-{
-}
-MyLabel::~MyLabel()
-{
-}
-
-void MyLabel::setImage(QImage image) {
-  QPixmap pixmap = QPixmap::fromImage(image);
-  int w = this->width();
-  int h = this->height();
-  setPixmap(pixmap.scaled(w, h, Qt::IgnoreAspectRatio));
-}
-EOF
-
-cat > "$APP_DIR/main.cpp" <<'EOF'
-#include <QApplication>
-#include <QVBoxLayout>
-#include <QWidget>
-
-#include "LeptonThread.h"
-#include "MyLabel.h"
-
-int main(int argc, char **argv)
-{
-        int typeColormap = 3;
-        int typeLepton = 2;
-        int spiSpeed = 20;
-        int rangeMin = -1;
-        int rangeMax = -1;
-        int loglevel = 0;
-
-        for(int i=1; i < argc; i++) {
-                if ((strcmp(argv[i], "-cm") == 0) && (i + 1 != argc)) {
-                        int val = std::atoi(argv[i + 1]);
-                        if ((val == 1) || (val == 2)) { typeColormap = val; i++; }
-                } else if ((strcmp(argv[i], "-tl") == 0) && (i + 1 != argc)) {
-                        int val = std::atoi(argv[i + 1]);
-                        if (val == 3) { typeLepton = val; i++; }
-                } else if ((strcmp(argv[i], "-ss") == 0) && (i + 1 != argc)) {
-                        int val = std::atoi(argv[i + 1]);
-                        if ((10 <= val) && (val <= 30)) { spiSpeed = val; i++; }
-                } else if ((strcmp(argv[i], "-min") == 0) && (i + 1 != argc)) {
-                        int val = std::atoi(argv[i + 1]);
-                        if ((0 <= val) && (val <= 65535)) { rangeMin = val; i++; }
-                } else if ((strcmp(argv[i], "-max") == 0) && (i + 1 != argc)) {
-                        int val = std::atoi(argv[i + 1]);
-                        if ((0 <= val) && (val <= 65535)) { rangeMax = val; i++; }
-                } else if ((strcmp(argv[i], "-d") == 0) && (i + 1 != argc)) {
-                        int val = std::atoi(argv[i + 1]);
-                        if (0 <= val) { loglevel = val & 0xFF; i++; }
-                }
-        }
-
-        QApplication a(argc, argv);
-
-        QWidget *w = new QWidget;
-        QVBoxLayout *layout = new QVBoxLayout(w);
-        layout->setContentsMargins(0,0,0,0);
-        layout->setSpacing(0);
-
-        MyLabel *label = new MyLabel(w);
-        layout->addWidget(label);
-
-        LeptonThread *thread = new LeptonThread();
-        thread->setLogLevel(loglevel);
-        thread->useColormap(typeColormap);
-        thread->useLepton(typeLepton);
-        thread->useSpiSpeedMhz(spiSpeed);
-        thread->setAutomaticScalingRange();
-        if (0 <= rangeMin) thread->useRangeMinValue(rangeMin);
-        if (0 <= rangeMax) thread->useRangeMaxValue(rangeMax);
-
-        QObject::connect(thread, SIGNAL(updateImage(QImage)), label, SLOT(setImage(QImage)));
-        thread->start();
-
-        w->showFullScreen();
-        return a.exec();
-}
-EOF
-
-# LeptonThread.cpp patching:
-# - fix autoRangeMin init bug
-# - force RGB16 for 16bpp fb0
-# Not replacing the entire file,
-# but enforcing the two load-bearing fixes idempotently.
-perl -0777 -pi -e 's/if\s*\(\s*autoRangeMin\s*==\s*true\s*\)\s*\{\s*\n\s*maxValue\s*=\s*65535\s*;/if (autoRangeMin == true) {\n                                minValue = 65535;/g' \
-  "$APP_DIR/LeptonThread.cpp" 2>/dev/null || true
-
-sed -i 's/QImage::Format_RGB888/QImage::Format_RGB16/g' \
-  "$APP_DIR/LeptonThread.cpp" "$APP_DIR/main.cpp" 2>/dev/null || true
-
-# Build
-log "[9/10] Build..."
+log "[8/10] Build..."
 sudo -u "$TARGET_USER" sh -c "cd '$APP_DIR' && qmake && make -j1"
 [[ -x "$BIN_PATH" ]] || die "Build failed: $BIN_PATH not found."
 
 # Create the lepton view service
-log "[10/10] Install systemd service..."
+log "[9/10] Install systemd service..."
+# Remove any older drop-in overrides from previous installs (they override ExecStart)
+rm -rf "/etc/systemd/system/${SERVICE_NAME}.d" >/dev/null 2>&1 || true
+
 cat > "/etc/systemd/system/$SERVICE_NAME" <<EOF
 [Unit]
 Description=Lepton thermal view (Qt linuxfb)
