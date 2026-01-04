@@ -58,7 +58,7 @@ Wait for the script to install everything and it will reboot itself. If you conn
   <thead>
     <tr>
       <th>Lepton Breakout V2 pin</th>
-      <th>Raspberry Pi pin (physical / signal)</th>
+      <th>Raspberry Pi GPIO pin</th>
       <th>RCA Connector</th>
     </tr>
   </thead>
