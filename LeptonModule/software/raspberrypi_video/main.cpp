@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         MyLabel *label = new MyLabel(w);
         label->setLogo(
             "flir_logo.png",
-            85,  // height
+            70,  // height
             60   // margin from edges in pixels
         );
         layout->addWidget(label);
