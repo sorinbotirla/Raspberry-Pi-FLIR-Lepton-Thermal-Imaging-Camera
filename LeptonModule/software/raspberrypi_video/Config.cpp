@@ -57,12 +57,14 @@ bool ConfigIO::load(const QString& path, AppCfg& out) {
         out.usb.width   = jInt(u, "width", out.usb.width);
         out.usb.height  = jInt(u, "height", out.usb.height);
         out.usb.fps     = jInt(u, "fps", out.usb.fps);
+        out.usb.emboss = jBool(u, "emboss", out.usb.emboss);
         loadLayer(u, out.usb.xform);
     }
 
     if (root.contains("thermal") && root["thermal"].isObject()) {
         auto t = root["thermal"].toObject();
         out.thermal.enabled = jBool(t, "enabled", out.thermal.enabled);
+        out.thermal.smooth = jInt(t, "smooth", out.thermal.smooth);
         loadLayer(t, out.thermal.xform);
         out.thermal.xform.opacity = jDbl(t, "opacity", out.thermal.xform.opacity);
     }
@@ -80,12 +82,14 @@ bool ConfigIO::save(const QString& path, const AppCfg& in) {
     u["width"] = in.usb.width;
     u["height"] = in.usb.height;
     u["fps"] = in.usb.fps;
+    u["emboss"] = in.usb.emboss;
     auto ux = saveLayer(in.usb.xform);
     for (auto it = ux.begin(); it != ux.end(); ++it) u[it.key()] = it.value();
     root["usb_cam"] = u;
 
     QJsonObject t;
     t["enabled"] = in.thermal.enabled;
+    t["smooth"] = in.thermal.smooth;
     auto tx = saveLayer(in.thermal.xform);
     for (auto it = tx.begin(); it != tx.end(); ++it) t[it.key()] = it.value();
     t["opacity"] = in.thermal.xform.opacity;

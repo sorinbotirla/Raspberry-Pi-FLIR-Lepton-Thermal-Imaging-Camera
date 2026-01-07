@@ -1,6 +1,10 @@
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include "Config.h"
+#include "CmdServer.h"
 
 #include "LeptonThread.h"
 #include "UsbCamThread.h"
@@ -39,6 +43,31 @@ int main(int argc, char **argv)
 
         QApplication a(argc, argv);
 
+        AppCfg cfg;
+
+        QString cfgPath = QCoreApplication::applicationDirPath() + "/config.json";
+        if (argc >= 2 && QString(argv[1]).endsWith(".json")) {
+            cfgPath = argv[1];
+        }
+
+        ConfigIO::load(cfgPath, cfg);
+
+        bool ok = ConfigIO::load(cfgPath, cfg);
+        qDebug() << "CONFIG LOAD" << cfgPath << ok
+                 << "bg=" << cfg.background
+                 << "usb_dev=" << cfg.usb.device;
+        qDebug() << "CFG thermal"
+                 << cfg.thermal.xform.offset_x
+                 << cfg.thermal.xform.offset_y
+                 << cfg.thermal.xform.scale
+                 << cfg.thermal.xform.rotate_deg;
+
+        qDebug() << "CFG usb"
+                 << cfg.usb.xform.offset_x
+                 << cfg.usb.xform.offset_y
+                 << cfg.usb.xform.scale
+                 << cfg.usb.xform.rotate_deg;
+
         QWidget *w = new QWidget;
         QVBoxLayout *layout = new QVBoxLayout(w);
         layout->setContentsMargins(0,0,0,0);
@@ -50,6 +79,17 @@ int main(int argc, char **argv)
             70,  // height
             60   // margin from edges in pixels
         );
+        myLabel->setConfig(cfg);
+        CmdServer *cmd = new CmdServer(
+            "/tmp/lepton_cmd",
+            cfgPath,
+            &cfg,
+            w
+        );
+
+        QObject::connect(cmd, &CmdServer::configChanged, [&cfg, myLabel]() {
+            myLabel->setConfig(cfg);
+        });
         layout->addWidget(myLabel);
 
         LeptonThread *thread = new LeptonThread();
@@ -64,9 +104,9 @@ int main(int argc, char **argv)
         QObject::connect(thread, SIGNAL(updateImage(QImage)), myLabel, SLOT(setImage(QImage)));
         thread->start();
 
-        UsbCamThread *cam = new UsbCamThread("/dev/video0");
-        cam->setSize(640, 480);
-        cam->setFps(15);
+       UsbCamThread *cam = new UsbCamThread(cfg.usb.device);
+       cam->setSize(cfg.usb.width, cfg.usb.height);
+       cam->setFps(cfg.usb.fps);
         QObject::connect(cam, SIGNAL(updateCamera(QImage)), myLabel, SLOT(setCameraImage(QImage)));
         cam->start();
 

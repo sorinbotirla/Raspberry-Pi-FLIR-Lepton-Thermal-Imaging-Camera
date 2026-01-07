@@ -7,6 +7,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QPaintEvent>
+#include "Config.h"
 
 class MyLabel : public QLabel {
   Q_OBJECT;
@@ -16,6 +17,7 @@ class MyLabel : public QLabel {
     ~MyLabel();
 
     void setLogo(const QString &path, int heightPx = 36, int marginPx = 6);
+    void setConfig(const AppCfg& cfg);
 
   public slots:
     void setImage(QImage);
@@ -30,6 +32,7 @@ class MyLabel : public QLabel {
     QPixmap m_logo;
     int m_logoHeight = 36;
     int m_logoMargin = 6;
+    AppCfg m_cfg;
 };
 
 #endif

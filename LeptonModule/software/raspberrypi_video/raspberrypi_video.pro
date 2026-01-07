@@ -21,7 +21,6 @@ OBJECTS_DIR=gen_objs
 MOC_DIR=gen_mocs
 
 HEADERS += *.h
-
 SOURCES += *.cpp
 
 unix:LIBS += -L$${RPI_LIBS}/$${LEPTONSDK}/Debug -lLEPTON_SDK

@@ -17,11 +17,13 @@ struct UsbCamCfg {
     int width = 640;
     int height = 480;
     int fps = 15;
+    bool emboss = false;
     LayerCfg xform;
 };
 
 struct ThermalCfg {
     bool enabled = true;
+    int smooth = 0; // 0=off, higher=stronger
     LayerCfg xform;
 };
 

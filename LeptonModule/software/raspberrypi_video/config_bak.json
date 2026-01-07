@@ -9,7 +9,7 @@
         "opacity": 1,
         "rotate_deg": 0,
         "scale": 1.05,
-        "smooth": 6
+        "smooth": 0
     },
     "usb_cam": {
         "device": "/dev/video0",
@@ -21,7 +21,7 @@
         "height": 480,
         "offset_x": 0,
         "offset_y": 0,
-        "opacity": 1,
+        "opacity": 0.5,
         "rotate_deg": 0,
         "scale": 1,
         "width": 640
