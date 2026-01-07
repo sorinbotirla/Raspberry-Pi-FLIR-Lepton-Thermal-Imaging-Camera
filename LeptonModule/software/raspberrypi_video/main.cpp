@@ -3,6 +3,7 @@
 #include <QWidget>
 
 #include "LeptonThread.h"
+#include "UsbCamThread.h"
 #include "MyLabel.h"
 
 int main(int argc, char **argv)
@@ -43,13 +44,13 @@ int main(int argc, char **argv)
         layout->setContentsMargins(0,0,0,0);
         layout->setSpacing(0);
 
-        MyLabel *label = new MyLabel(w);
-        label->setLogo(
+        MyLabel *myLabel = new MyLabel(w);
+        myLabel->setLogo(
             "flir_logo.png",
             70,  // height
             60   // margin from edges in pixels
         );
-        layout->addWidget(label);
+        layout->addWidget(myLabel);
 
         LeptonThread *thread = new LeptonThread();
         thread->setLogLevel(loglevel);
@@ -60,8 +61,14 @@ int main(int argc, char **argv)
         if (0 <= rangeMin) thread->useRangeMinValue(rangeMin);
         if (0 <= rangeMax) thread->useRangeMaxValue(rangeMax);
 
-        QObject::connect(thread, SIGNAL(updateImage(QImage)), label, SLOT(setImage(QImage)));
+        QObject::connect(thread, SIGNAL(updateImage(QImage)), myLabel, SLOT(setImage(QImage)));
         thread->start();
+
+        UsbCamThread *cam = new UsbCamThread("/dev/video0");
+        cam->setSize(640, 480);
+        cam->setFps(15);
+        QObject::connect(cam, SIGNAL(updateCamera(QImage)), myLabel, SLOT(setCameraImage(QImage)));
+        cam->start();
 
         w->showFullScreen();
         return a.exec();

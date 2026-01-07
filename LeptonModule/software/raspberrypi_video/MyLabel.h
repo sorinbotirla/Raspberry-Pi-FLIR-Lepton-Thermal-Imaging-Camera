@@ -19,12 +19,14 @@ class MyLabel : public QLabel {
 
   public slots:
     void setImage(QImage);
+    void setCameraImage(QImage img);
 
   protected:
     void paintEvent(QPaintEvent *event) override;
 
   private:
-    QImage m_lastImage;
+    QImage m_lastImage;     // thermal sensor
+    QImage m_camImage;      // usb camera
     QPixmap m_logo;
     int m_logoHeight = 36;
     int m_logoMargin = 6;

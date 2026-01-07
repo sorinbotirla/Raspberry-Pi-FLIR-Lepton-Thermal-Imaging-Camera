@@ -1,0 +1,18 @@
+{
+  "background": "black",
+
+  "thermal": {
+    "x": 0,
+    "y": 0,
+    "scale": 1.0,
+    "rotation": 0.0,
+    "opacity": 1.0
+  },
+
+  "camera": {
+    "x": 0,
+    "y": 0,
+    "scale": 1.0,
+    "rotation": 0.0
+  }
+}
