@@ -192,6 +192,11 @@ Run each command like this:
 
 ```
 echo "<command>" > /tmp/lepton_cmd
+
+// example
+
+raspberry@flircam:~/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video $ echo "set camera opacity 0.4" > /tmp/lepton_cmd
+
 ```
 
 ## Why Composite video instead of HDMI?
