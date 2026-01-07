@@ -199,6 +199,12 @@ echo "set camera opacity 0.4" > /tmp/lepton_cmd
 
 ```
 
+Alternatively you can edit the ~//Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/config.json and restart the service after you save the edits
+
+```
+sudo systemctl restart lepton-view.service
+```
+
 ## Why Composite video instead of HDMI?
 
 Composite video requires only two wires, which allows it to operate reliably over long distances, often exceeding 10 to 20 meters without significant interference. Using a thin coaxial cable enables even longer runs, typically between 50 and 200 meters. In comparison, HDMI cables are more sensitive to interference and do not perform well over long distances. Composite CVBS connections can directly replace existing CCTV cameras or automotive front and rear camera systems.
