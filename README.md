@@ -155,6 +155,45 @@ Example of the TV pins which were used in this project (RPI Zero 2W)
   </tr>
 </table>
 
+## Secondsry USB camera
+
+This project supports overlaying the thermal imaging over a video stream from an usb camera, for example, a laptop webcam can be tied to a usb cable and the images will be shown on the screen.
+
+
+## Settings
+
+You can adjust several settings and do image alignment in real time
+
+```
+set camera offset_x <px> // move camera layer horizontally
+set camera offset_y <px> // move camera layer vertically
+set camera scale <float> // scale camera layer
+set camera rotate_deg <deg> // rotate camera layer
+set camera opacity <0..1> // change camera opacity
+set camera flip_h <true|false> // flip camera horizontally
+set camera flip_v <true|false> // flip camera vertically
+set camera emboss <on|off> // enable edge-only (contour) camera view
+set camera enabled <on|off> // enable or disable camera layer
+set thermal offset_x <px> // move thermal layer horizontally
+set thermal offset_y <px> // move thermal layer vertically
+set thermal scale <float> // scale thermal layer
+set thermal rotate_deg <deg> // rotate thermal layer
+set thermal opacity <0..1> // change thermal opacity
+set thermal flip_h <true|false> // flip thermal horizontally
+set thermal flip_v <true|false> // flip thermal vertically
+set thermal smooth <0..N> // smooth thermal image (reduce pixelation)
+set thermal enabled <on|off> // enable or disable thermal layer
+bg black // set background to black
+bg grey // set background to grey
+
+```
+
+Run each command like this:
+
+```
+echo "<command>" > /tmp/lepton_cmd
+```
+
 ## Why Composite video instead of HDMI?
 
 Composite video requires only two wires, which allows it to operate reliably over long distances, often exceeding 10 to 20 meters without significant interference. Using a thin coaxial cable enables even longer runs, typically between 50 and 200 meters. In comparison, HDMI cables are more sensitive to interference and do not perform well over long distances. Composite CVBS connections can directly replace existing CCTV cameras or automotive front and rear camera systems.
