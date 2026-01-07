@@ -192,22 +192,52 @@ fi
 
 log "[8/10] Build..."
 
-QMAKE_DEFINES=""
-
-if [ "$BACKGROUND_MODE" = "black" ]; then
-    QMAKE_DEFINES="BACKGROUND_DEFINES+=BLACK_BACKGROUND"
-fi
-
 sudo -u "$TARGET_USER" sh -c "
     cd '$APP_DIR' &&
     make distclean >/dev/null 2>&1 || true &&
     rm -f Makefile .qmake.stash &&
     rm -rf gen_objs gen_mocs &&
-    qmake $QMAKE_DEFINES &&
+    qmake &&
     make -j1
 "
 
 [[ -x "$BIN_PATH" ]] || die "Build failed: $BIN_PATH not found."
+
+CFG_PATH="$APP_DIR/config.json"
+if [[ ! -f "$CFG_PATH" ]]; then
+  cat > "$CFG_PATH" <<'JSON'
+{
+  "background": "black",
+  "thermal": {
+    "enabled": true,
+    "flip_h": false,
+    "flip_v": false,
+    "offset_x": 0,
+    "offset_y": 0,
+    "opacity": 1.0,
+    "rotate_deg": 0,
+    "scale": 1.0,
+    "smooth": 0
+  },
+  "usb_cam": {
+    "enabled": true,
+    "device": "/dev/video0",
+    "width": 640,
+    "height": 480,
+    "fps": 15,
+    "flip_h": false,
+    "flip_v": false,
+    "offset_x": 0,
+    "offset_y": 0,
+    "opacity": 1.0,
+    "rotate_deg": 0,
+    "scale": 1.0,
+    "emboss": false
+  }
+}
+JSON
+  chown "$TARGET_USER:$TARGET_USER" "$CFG_PATH"
+fi
 
 # Create the lepton view service
 log "[9/10] Install systemd service..."
@@ -227,6 +257,10 @@ WorkingDirectory=$APP_DIR
 Environment=QT_QPA_PLATFORM=linuxfb
 Environment=QT_QPA_FB=/dev/fb0
 Environment=XDG_RUNTIME_DIR=/tmp/runtime-root
+
+ExecStartPre=/bin/rm -f /tmp/lepton_cmd
+ExecStartPre=/usr/bin/mkfifo /tmp/lepton_cmd
+ExecStartPre=/bin/chmod 666 /tmp/lepton_cmd
 
 StandardInput=tty
 StandardOutput=tty
