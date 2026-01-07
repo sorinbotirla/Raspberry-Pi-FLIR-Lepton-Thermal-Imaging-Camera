@@ -173,7 +173,6 @@ set camera opacity <0..1> // change camera opacity
 set camera flip_h <true|false> // flip camera horizontally
 set camera flip_v <true|false> // flip camera vertically
 set camera emboss <on|off> // enable edge-only (contour) camera view
-set camera enabled <on|off> // enable or disable camera layer
 set thermal offset_x <px> // move thermal layer horizontally
 set thermal offset_y <px> // move thermal layer vertically
 set thermal scale <float> // scale thermal layer
@@ -182,7 +181,6 @@ set thermal opacity <0..1> // change thermal opacity
 set thermal flip_h <true|false> // flip thermal horizontally
 set thermal flip_v <true|false> // flip thermal vertically
 set thermal smooth <0..N> // smooth thermal image (reduce pixelation)
-set thermal enabled <on|off> // enable or disable thermal layer
 bg black // set background to black
 bg grey // set background to grey
 
