@@ -199,7 +199,7 @@ echo "set camera opacity 0.4" > /tmp/lepton_cmd
 
 ```
 
-Alternatively you can edit the ~//Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/config.json and restart the service after you save the edits
+Alternatively you can edit the ```~/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/config.json``` and restart the service after you save the edits
 
 ```
 sudo systemctl restart lepton-view.service
