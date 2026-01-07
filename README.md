@@ -195,7 +195,7 @@ echo "<command>" > /tmp/lepton_cmd
 
 // example
 
-raspberry@flircam:~/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video $ echo "set camera opacity 0.4" > /tmp/lepton_cmd
+echo "set camera opacity 0.4" > /tmp/lepton_cmd
 
 ```
 
