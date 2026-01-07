@@ -97,6 +97,7 @@ apt-get install -y --no-install-recommends \
   qt5-qmake qtbase5-dev qtbase5-dev-tools \
   libqt5gui5 libqt5widgets5 libqt5core5a \
   libgles2-mesa-dev \
+  ffmpeg \
   fbset
 
 # Interface Requirements (SPI/I2C/rootfs)
