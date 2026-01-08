@@ -8,6 +8,7 @@
 #include <QtCore>
 #include <QPixmap>
 #include <QImage>
+#include <QString>
 
 #define PACKET_SIZE 164
 #define PACKET_SIZE_UINT16 (PACKET_SIZE/2)
@@ -29,6 +30,7 @@ public:
   void setAutomaticScalingRange();
   void useRangeMinValue(uint16_t);
   void useRangeMaxValue(uint16_t);
+  void setBackgroundMode(const QString& mode);
   void run();
 
 public slots:
@@ -54,6 +56,7 @@ private:
   int myImageWidth;
   int myImageHeight;
   QImage myImage;
+  QString m_backgroundMode = "black";
 
   uint8_t result[PACKET_SIZE*PACKETS_PER_FRAME];
   uint8_t shelf[4][PACKET_SIZE*PACKETS_PER_FRAME];

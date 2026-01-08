@@ -249,20 +249,19 @@ void LeptonThread::run()
 				int ofs_b = 3 * value + 2; if (colormapSize <= ofs_b) ofs_b = colormapSize - 1;
 				color = qRgb(colormap[ofs_r], colormap[ofs_g], colormap[ofs_b]);
 
-                // Make grayscale pixels black, keep colored pixels as-is
-                #ifdef BLACK_BACKGROUND
-                int r = qRed(color);
-                int g = qGreen(color);
-                int b = qBlue(color);
-
-                int blackAmount = 4;
-
-                if (abs(r - g) <= blackAmount &&
-                    abs(g - b) <= blackAmount &&
-                    abs(r - b) <= blackAmount) {
-                    color = qRgb(0, 0, 0);
-                }
-                #endif
+               // Make grayscale pixels black, keep colored pixels as-is
+               // background mode: if black -> make grayscale pixels black (for transparency keying)
+               // if grey -> keep grayscale as grayscale
+               bool blackBg = (m_backgroundMode == "black");
+               if (blackBg) {
+                   // If the colormap output is grayscale-ish (R==G==B), force it to black
+                   int r = qRed(color), g = qGreen(color), b = qBlue(color);
+                   if (r == g && g == b) {
+                       color = qRgb(0, 0, 0);
+                   }
+               } else {
+                   // leave 'color' unchanged (grey background stays grey)
+               }
 
 				if (typeLepton == 3) {
 					column = (i % PACKET_SIZE_UINT16) - 2 + (myImageWidth / 2) * ((i % (PACKET_SIZE_UINT16 * 2)) / PACKET_SIZE_UINT16);
@@ -299,5 +298,10 @@ void LeptonThread::log_message(uint16_t level, std::string msg)
 	if (level <= loglevel) {
 		std::cerr << msg << std::endl;
 	}
+}
+
+void LeptonThread::setBackgroundMode(const QString& mode)
+{
+    m_backgroundMode = mode.toLower();
 }
 

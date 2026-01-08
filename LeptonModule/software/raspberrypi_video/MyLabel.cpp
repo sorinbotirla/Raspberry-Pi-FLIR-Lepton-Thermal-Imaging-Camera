@@ -84,11 +84,10 @@ void MyLabel::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
 
     QPainter p(this);
-    QColor bg = (m_cfg.background.toLower() == "grey") ? QColor(128,128,128) : Qt::black;
-    p.fillRect(rect(), bg);
+    p.fillRect(rect(), Qt::black);
 
     // 1) draw camera background
-    if (!m_camImage.isNull()) {
+    if (m_cfg.usb.enabled && !m_camImage.isNull()) {
         p.save();
         p.translate(width() / 2.0 + m_cfg.usb.xform.offset_x,
                     height() / 2.0 + m_cfg.usb.xform.offset_y);

@@ -50,8 +50,6 @@ int main(int argc, char **argv)
             cfgPath = argv[1];
         }
 
-        ConfigIO::load(cfgPath, cfg);
-
         bool ok = ConfigIO::load(cfgPath, cfg);
         qDebug() << "CONFIG LOAD" << cfgPath << ok
                  << "bg=" << cfg.background
@@ -79,6 +77,7 @@ int main(int argc, char **argv)
             70,  // height
             60   // margin from edges in pixels
         );
+        layout->addWidget(myLabel);
         myLabel->setConfig(cfg);
         CmdServer *cmd = new CmdServer(
             "/tmp/lepton_cmd",
@@ -87,17 +86,20 @@ int main(int argc, char **argv)
             w
         );
 
-        QObject::connect(cmd, &CmdServer::configChanged, [&cfg, myLabel]() {
-            myLabel->setConfig(cfg);
-        });
-        layout->addWidget(myLabel);
-
         LeptonThread *thread = new LeptonThread();
+        thread->setBackgroundMode(cfg.background);
         thread->setLogLevel(loglevel);
         thread->useColormap(typeColormap);
         thread->useLepton(typeLepton);
         thread->useSpiSpeedMhz(spiSpeed);
         thread->setAutomaticScalingRange();
+
+        QObject::connect(cmd, &CmdServer::configChanged, [&cfg, myLabel, thread]() {
+            myLabel->setConfig(cfg);
+            thread->setBackgroundMode(cfg.background);
+        });
+
+
         if (0 <= rangeMin) thread->useRangeMinValue(rangeMin);
         if (0 <= rangeMax) thread->useRangeMaxValue(rangeMax);
 

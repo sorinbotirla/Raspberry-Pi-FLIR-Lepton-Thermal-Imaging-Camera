@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSaveFile>
 
 static int jInt(const QJsonObject& o, const char* k, int def) {
     return o.contains(k) ? o.value(k).toInt(def) : def;
@@ -43,8 +44,11 @@ bool ConfigIO::load(const QString& path, AppCfg& out) {
     if (!f.exists()) return false;
     if (!f.open(QIODevice::ReadOnly)) return false;
 
+    QByteArray data = f.readAll();
+    if (data.size() == 0) return false;
+
     QJsonParseError err;
-    auto doc = QJsonDocument::fromJson(f.readAll(), &err);
+    auto doc = QJsonDocument::fromJson(data, &err);
     if (err.error != QJsonParseError::NoError || !doc.isObject()) return false;
 
     auto root = doc.object();
@@ -57,20 +61,22 @@ bool ConfigIO::load(const QString& path, AppCfg& out) {
         out.usb.width   = jInt(u, "width", out.usb.width);
         out.usb.height  = jInt(u, "height", out.usb.height);
         out.usb.fps     = jInt(u, "fps", out.usb.fps);
-        out.usb.emboss = jBool(u, "emboss", out.usb.emboss);
+        out.usb.emboss  = jBool(u, "emboss", out.usb.emboss);
         loadLayer(u, out.usb.xform);
     }
 
     if (root.contains("thermal") && root["thermal"].isObject()) {
         auto t = root["thermal"].toObject();
         out.thermal.enabled = jBool(t, "enabled", out.thermal.enabled);
-        out.thermal.smooth = jInt(t, "smooth", out.thermal.smooth);
+        out.thermal.smooth  = jInt(t, "smooth", out.thermal.smooth);
         loadLayer(t, out.thermal.xform);
         out.thermal.xform.opacity = jDbl(t, "opacity", out.thermal.xform.opacity);
     }
 
     return true;
 }
+
+
 
 bool ConfigIO::save(const QString& path, const AppCfg& in) {
     QJsonObject root;
@@ -96,8 +102,17 @@ bool ConfigIO::save(const QString& path, const AppCfg& in) {
     root["thermal"] = t;
 
     QJsonDocument doc(root);
-    QFile f(path);
-    if (!f.open(QIODevice::WriteOnly | QIODevice::Truncate)) return false;
-    f.write(doc.toJson(QJsonDocument::Indented));
-    return true;
+    QByteArray bytes = doc.toJson(QJsonDocument::Indented);
+
+    // Optional: keep a simple backup of the last good file
+    QFile::remove(path + ".bak");
+    if (QFile::exists(path)) QFile::copy(path, path + ".bak");
+
+    QSaveFile f(path);
+    f.setDirectWriteFallback(true); // safer on some filesystems
+    if (!f.open(QIODevice::WriteOnly)) return false;
+
+    if (f.write(bytes) != bytes.size()) return false;
+    return f.commit(); // atomic replace
 }
+
