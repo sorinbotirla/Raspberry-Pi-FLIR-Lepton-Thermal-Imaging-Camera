@@ -163,14 +163,14 @@ Example of the TV pins which were used in this project (RPI Zero 2W)
   </tr>
 </table>
 
-## Secondsry USB camera
+## Secondary USB camera
 
 This project supports overlaying the thermal imaging over a video stream from an usb camera, for example, a laptop webcam can be tied to a usb cable and the images will be shown on the screen.
 
 
 ## Settings
 
-You can adjust several settings and do image alignment in real time
+You can adjust several settings in the webpage and do image alignment in real time. Or you can also send the commands in terminal/ssh like this:
 
 ```
 set camera offset_x <px> // move camera layer horizontally
