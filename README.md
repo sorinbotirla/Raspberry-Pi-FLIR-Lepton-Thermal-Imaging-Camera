@@ -24,6 +24,14 @@ This repository uses the raspberry_video from the <a href="https://github.com/gr
 ## What does the <a href="https://github.com/sorinbotirla/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/blob/main/setupleptonrpi.sh">setupleptonrpi.sh</a> script do?
 This script automatically prepares a Raspberry Pi to run a FLIR Lepton thermal camera without a desktop environment. It configures the system to use framebuffer video output instead of HDMI or a window manager. The script enables the required hardware interfaces and installs all needed software dependencies. It downloads the thermal camera software, applies stability fixes, and builds it for the current Raspberry Pi. The display is configured for stable composite video output without boot messages on screen. A background service is installed so the camera starts automatically on every boot. The script can be safely run on a fresh system or on an existing installation. After completion, the device boots directly into a stable thermal camera view.
 
+## Webp App
+
+The project features a web app where you can view the video stream in real time and adust the camera/lepton settings. It's available on
+
+```
+http://your raspberry ip:8080
+```
+
 ## Bill of Materials (BOM / Components required)
 You will need:
 <ul>
