@@ -1,6 +1,7 @@
 #include "MyLabel.h"
 #include <QPainter>
 #include <QTransform>
+#include <QMutexLocker>
 
 MyLabel::MyLabel(QWidget *parent) : QLabel(parent)
 {
@@ -8,6 +9,12 @@ MyLabel::MyLabel(QWidget *parent) : QLabel(parent)
 
 MyLabel::~MyLabel()
 {
+}
+
+QImage MyLabel::getLastComposite() const
+{
+    QMutexLocker lk(&m_compMtx);
+    return m_lastComposite;
 }
 
 void MyLabel::setLogo(const QString &path, int heightPx, int marginPx)
@@ -83,8 +90,12 @@ void MyLabel::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    QPainter p(this);
-    p.fillRect(rect(), Qt::black);
+    QImage frame(size(), QImage::Format_ARGB32);
+    frame.fill(0);
+
+    QPainter p(&frame);
+    QColor uiBg = Qt::black;
+    p.fillRect(QRect(QPoint(0,0), size()), uiBg);
 
     // 1) draw camera background
     if (m_cfg.usb.enabled && !m_camImage.isNull()) {
@@ -105,7 +116,7 @@ void MyLabel::paintEvent(QPaintEvent *event)
     }
 
     // 2) draw thermal overlay (black pixels become transparent if BLACK_BACKGROUND was used)
-    if (!m_lastImage.isNull()) {
+    if (m_cfg.thermal.enabled && !m_lastImage.isNull()) {
         QImage a = m_lastImage.convertToFormat(QImage::Format_ARGB32);
 
         // make pure-black transparent (this works only if thermal background is forced to black)
@@ -156,11 +167,19 @@ void MyLabel::paintEvent(QPaintEvent *event)
         QRect r(m_logoMargin, height() - m_logoMargin - m_logoHeight, w, m_logoHeight);
         p.drawPixmap(r, m_logo);
     }
+
+    {
+        QMutexLocker lk(&m_compMtx);
+        m_lastComposite = frame;
+    }
+
+    // draw to screen
+    QPainter w(this);
+    w.drawImage(QRect(QPoint(0,0), size()), frame);
 }
 
 void MyLabel::setConfig(const AppCfg& cfg)
-    {
-        m_cfg = cfg;
-        update();
-    }
-
+{
+    m_cfg = cfg;
+    update();
+}

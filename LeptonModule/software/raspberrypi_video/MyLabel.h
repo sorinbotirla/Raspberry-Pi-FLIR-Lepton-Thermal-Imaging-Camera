@@ -7,6 +7,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QPaintEvent>
+#include <QMutex>
 #include "Config.h"
 
 class MyLabel : public QLabel {
@@ -18,6 +19,7 @@ class MyLabel : public QLabel {
 
     void setLogo(const QString &path, int heightPx = 36, int marginPx = 6);
     void setConfig(const AppCfg& cfg);
+    QImage getLastComposite() const;
 
   public slots:
     void setImage(QImage);
@@ -33,6 +35,8 @@ class MyLabel : public QLabel {
     int m_logoHeight = 36;
     int m_logoMargin = 6;
     AppCfg m_cfg;
+    mutable QMutex m_compMtx;
+    QImage m_lastComposite;
 };
 
 #endif

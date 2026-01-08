@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -I../raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -Igen_mocs -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++
+INCPATH       = -I. -I. -I../raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -Igen_mocs -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = raspberrypi_video1.0.0
 DISTDIR = /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_objs/raspberrypi_video1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) -L../raspberrypi_libs/leptonSDKEmb32PUB/Debug -lLEPTON_SDK /usr/lib/arm-linux-gnueabihf/libQt5Widgets.so /usr/lib/arm-linux-gnueabihf/libQt5Gui.so /usr/lib/arm-linux-gnueabihf/libQt5Core.so -lGLESv2 -lpthread -latomic   
+LIBS          = $(SUBLIBS) -L../raspberrypi_libs/leptonSDKEmb32PUB/Debug -lLEPTON_SDK /usr/lib/arm-linux-gnueabihf/libQt5Widgets.so /usr/lib/arm-linux-gnueabihf/libQt5Gui.so /usr/lib/arm-linux-gnueabihf/libQt5Network.so /usr/lib/arm-linux-gnueabihf/libQt5Core.so -lGLESv2 -lpthread -latomic   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -57,11 +57,13 @@ SOURCES       = CmdServer.cpp \
 		Lepton_I2C.cpp \
 		LeptonThread.cpp \
 		main.cpp \
+		MjpegServer.cpp \
 		MyLabel.cpp \
 		Palettes.cpp \
 		SPI.cpp \
 		UsbCamThread.cpp gen_mocs/moc_CmdServer.cpp \
 		gen_mocs/moc_LeptonThread.cpp \
+		gen_mocs/moc_MjpegServer.cpp \
 		gen_mocs/moc_MyLabel.cpp \
 		gen_mocs/moc_UsbCamThread.cpp
 OBJECTS       = gen_objs/CmdServer.o \
@@ -69,12 +71,14 @@ OBJECTS       = gen_objs/CmdServer.o \
 		gen_objs/Lepton_I2C.o \
 		gen_objs/LeptonThread.o \
 		gen_objs/main.o \
+		gen_objs/MjpegServer.o \
 		gen_objs/MyLabel.o \
 		gen_objs/Palettes.o \
 		gen_objs/SPI.o \
 		gen_objs/UsbCamThread.o \
 		gen_objs/moc_CmdServer.o \
 		gen_objs/moc_LeptonThread.o \
+		gen_objs/moc_MjpegServer.o \
 		gen_objs/moc_MyLabel.o \
 		gen_objs/moc_UsbCamThread.o
 DIST          = /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/spec_pre.prf \
@@ -156,6 +160,7 @@ DIST          = /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/spec_pre.prf \
 		Config.h \
 		Lepton_I2C.h \
 		LeptonThread.h \
+		MjpegServer.h \
 		MyLabel.h \
 		Palettes.h \
 		SPI.h \
@@ -164,6 +169,7 @@ DIST          = /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/spec_pre.prf \
 		Lepton_I2C.cpp \
 		LeptonThread.cpp \
 		main.cpp \
+		MjpegServer.cpp \
 		MyLabel.cpp \
 		Palettes.cpp \
 		SPI.cpp \
@@ -347,8 +353,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents CmdServer.h Config.h Lepton_I2C.h LeptonThread.h MyLabel.h Palettes.h SPI.h UsbCamThread.h $(DISTDIR)/
-	$(COPY_FILE) --parents CmdServer.cpp Config.cpp Lepton_I2C.cpp LeptonThread.cpp main.cpp MyLabel.cpp Palettes.cpp SPI.cpp UsbCamThread.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents CmdServer.h Config.h Lepton_I2C.h LeptonThread.h MjpegServer.h MyLabel.h Palettes.h SPI.h UsbCamThread.h $(DISTDIR)/
+	$(COPY_FILE) --parents CmdServer.cpp Config.cpp Lepton_I2C.cpp LeptonThread.cpp main.cpp MjpegServer.cpp MyLabel.cpp Palettes.cpp SPI.cpp UsbCamThread.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -387,29 +393,34 @@ compiler_moc_predefs_clean:
 gen_mocs/moc_predefs.h: /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o gen_mocs/moc_predefs.h /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: gen_mocs/moc_CmdServer.cpp gen_mocs/moc_LeptonThread.cpp gen_mocs/moc_MyLabel.cpp gen_mocs/moc_UsbCamThread.cpp
+compiler_moc_header_make_all: gen_mocs/moc_CmdServer.cpp gen_mocs/moc_LeptonThread.cpp gen_mocs/moc_MjpegServer.cpp gen_mocs/moc_MyLabel.cpp gen_mocs/moc_UsbCamThread.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) gen_mocs/moc_CmdServer.cpp gen_mocs/moc_LeptonThread.cpp gen_mocs/moc_MyLabel.cpp gen_mocs/moc_UsbCamThread.cpp
+	-$(DEL_FILE) gen_mocs/moc_CmdServer.cpp gen_mocs/moc_LeptonThread.cpp gen_mocs/moc_MjpegServer.cpp gen_mocs/moc_MyLabel.cpp gen_mocs/moc_UsbCamThread.cpp
 gen_mocs/moc_CmdServer.cpp: CmdServer.h \
 		gen_mocs/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include CmdServer.h -o gen_mocs/moc_CmdServer.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include CmdServer.h -o gen_mocs/moc_CmdServer.cpp
 
 gen_mocs/moc_LeptonThread.cpp: LeptonThread.h \
 		gen_mocs/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include LeptonThread.h -o gen_mocs/moc_LeptonThread.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include LeptonThread.h -o gen_mocs/moc_LeptonThread.cpp
+
+gen_mocs/moc_MjpegServer.cpp: MjpegServer.h \
+		gen_mocs/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include MjpegServer.h -o gen_mocs/moc_MjpegServer.cpp
 
 gen_mocs/moc_MyLabel.cpp: MyLabel.h \
 		Config.h \
 		gen_mocs/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include MyLabel.h -o gen_mocs/moc_MyLabel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include MyLabel.h -o gen_mocs/moc_MyLabel.cpp
 
 gen_mocs/moc_UsbCamThread.cpp: UsbCamThread.h \
 		gen_mocs/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include UsbCamThread.h -o gen_mocs/moc_UsbCamThread.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video/gen_mocs/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_video -I/home/lufy/Raspberry-Pi-FLIR-Lepton-Thermal-Imaging-Camera/LeptonModule/software/raspberrypi_libs -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I/usr/include/c++/12 -I/usr/include/arm-linux-gnueabihf/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/arm-linux-gnueabihf/12/include -I/usr/local/include -I/usr/include/arm-linux-gnueabihf -I/usr/include UsbCamThread.h -o gen_mocs/moc_UsbCamThread.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -453,10 +464,16 @@ gen_objs/LeptonThread.o: LeptonThread.cpp LeptonThread.h \
 
 gen_objs/main.o: main.cpp Config.h \
 		CmdServer.h \
+		MjpegServer.h \
 		LeptonThread.h \
 		UsbCamThread.h \
 		MyLabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gen_objs/main.o main.cpp
+
+gen_objs/MjpegServer.o: MjpegServer.cpp MjpegServer.h \
+		MyLabel.h \
+		Config.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gen_objs/MjpegServer.o MjpegServer.cpp
 
 gen_objs/MyLabel.o: MyLabel.cpp MyLabel.h \
 		Config.h
@@ -476,6 +493,9 @@ gen_objs/moc_CmdServer.o: gen_mocs/moc_CmdServer.cpp
 
 gen_objs/moc_LeptonThread.o: gen_mocs/moc_LeptonThread.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gen_objs/moc_LeptonThread.o gen_mocs/moc_LeptonThread.cpp
+
+gen_objs/moc_MjpegServer.o: gen_mocs/moc_MjpegServer.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gen_objs/moc_MjpegServer.o gen_mocs/moc_MjpegServer.cpp
 
 gen_objs/moc_MyLabel.o: gen_mocs/moc_MyLabel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gen_objs/moc_MyLabel.o gen_mocs/moc_MyLabel.cpp

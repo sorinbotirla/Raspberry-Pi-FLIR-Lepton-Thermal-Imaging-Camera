@@ -1,0 +1,140 @@
+html, body { height:100%; }
+body {
+    margin:0;
+    background:#000;
+    color:#fff;
+    font-family: Arial, sans-serif;
+}
+.table {
+    position: relative;
+    display: table;
+    width: 100%;
+}
+.thead,
+.tbody,
+.tfoot,
+.trg {
+    display: table-row-group;
+}
+.tr {
+    display: table-row;
+}
+.td, .th {
+    display: table-cell;
+    /* font-size: 0; */
+    /* line-height: 0; */
+    vertical-align: top;
+}
+.app {
+    display:flex;
+    flex-direction:column;
+    height:100%;
+}
+
+.preview {
+    flex: 1 1 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px;
+    box-sizing:border-box;
+}
+
+.preview-inner {
+    width:100%;
+    max-width: 980px;
+}
+
+#stream {
+    width:100%;
+    height:auto;
+    display:block;
+    border:1px solid #222;
+    background:#000;
+}
+
+.controls {
+    flex: 0 0 auto;
+    padding:8px;
+    box-sizing:border-box;
+}
+
+.card {
+    max-width: 980px;
+    margin: 0 auto;
+    border:1px solid #222;
+    background:#0b0b0b;
+    padding:12px;
+    box-sizing:border-box;
+}
+
+.card-title {
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.row {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+.select, .slider, .chk {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid #222;
+    background:#111;
+    padding:6px 10px;
+    box-sizing:border-box;
+    width: 100%;
+    min-height: 40px;
+}
+
+.select select { background:#000; color:#fff; border:1px solid #333; padding:4px; }
+.slider input[type="range"] { flex:1 1 auto; }
+.val { min-width:52px; text-align:right; opacity:0.85; }
+
+.grid {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.group {
+    flex:1 1 320px;
+    border:1px solid #222;
+    background:#0f0f0f;
+    padding:10px;
+    box-sizing:border-box;
+}
+
+.group-title {
+    font-weight:bold;
+    margin-bottom:8px;
+    opacity:0.9;
+}
+
+button {
+    background:#111;
+    color:#fff;
+    border:1px solid #333;
+    padding:8px 12px;
+    cursor:pointer;
+}
+
+button:active { transform: translateY(1px); }
+.footer { justify-content:flex-end; }
+
+#btn_reload {
+    display: block;
+    -webkit-appearance: none;
+    position: relative;
+    padding: 20px 40px;
+    margin: 20px auto;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    background: #222;
+}

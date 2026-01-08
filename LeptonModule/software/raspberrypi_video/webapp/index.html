@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FLIR Cam</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <div class="preview">
+        <div class="preview-inner">
+            <img id="stream" src="/mjpeg" alt="stream">
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="card">
+            <div class="card-title">Controls</div>
+
+            <div class="row">
+                <!--<label class="chk">-->
+                <!--<input type="checkbox" id="cam_enabled">-->
+                <!--<span>Camera</span>-->
+                <!--</label>-->
+
+                <!--<label class="chk">-->
+                <!--<input type="checkbox" id="thermal_enabled">-->
+                <!--<span>Thermal</span>-->
+                <!--</label>-->
+                <div class="table">
+                    <div class="tr">
+                        <div class="td">
+                            <label class="chk">
+                                <input type="checkbox" id="cam_emboss">
+                                <span>Emboss</span>
+                            </label>
+                        </div>
+                        <div class="td">
+                            <label class="select">
+                                <span>Thermal BG</span>
+                                <select id="bg_mode">
+                                    <option value="black">black</option>
+                                    <option value="grey">grey</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="slider">
+                    <span>Smoothing</span>
+                    <input type="range" id="thermal_smooth" min="0" max="10" step="1">
+                    <span class="val" id="thermal_smooth_val">0</span>
+                </label>
+            </div>
+
+            <div class="grid">
+                <div class="group">
+                    <div class="group-title">Thermal</div>
+
+                    <label class="slider">
+                        <span>offset_x</span>
+                        <input type="range" id="th_offx" min="-300" max="300" step="1">
+                        <span class="val" id="th_offx_val">0</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>offset_y</span>
+                        <input type="range" id="th_offy" min="-300" max="300" step="1">
+                        <span class="val" id="th_offy_val">0</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>scale</span>
+                        <input type="range" id="th_scale" min="0.5" max="2.0" step="0.01">
+                        <span class="val" id="th_scale_val">1</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>opacity</span>
+                        <input type="range" id="th_opacity" min="0" max="1" step="0.01">
+                        <span class="val" id="th_opacity_val">1</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>rotate_deg</span>
+                        <input type="range" id="th_rot" min="-30" max="30" step="1">
+                        <span class="val" id="th_rot_val">0</span>
+                    </label>
+                </div>
+
+                <div class="group">
+                    <div class="group-title">Camera</div>
+
+                    <label class="slider">
+                        <span>offset_x</span>
+                        <input type="range" id="cam_offx" min="-300" max="300" step="1">
+                        <span class="val" id="cam_offx_val">0</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>offset_y</span>
+                        <input type="range" id="cam_offy" min="-300" max="300" step="1">
+                        <span class="val" id="cam_offy_val">0</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>scale</span>
+                        <input type="range" id="cam_scale" min="0.5" max="2.0" step="0.01">
+                        <span class="val" id="cam_scale_val">1</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>opacity</span>
+                        <input type="range" id="cam_opacity" min="0" max="1" step="0.01">
+                        <span class="val" id="cam_opacity_val">1</span>
+                    </label>
+
+                    <label class="slider">
+                        <span>rotate_deg</span>
+                        <input type="range" id="cam_rot" min="-30" max="30" step="1">
+                        <span class="val" id="cam_rot_val">0</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row footer">
+                <button id="btn_reload">Reload stream</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/app.js"></script>
+<script>
+    window.FlirCam = new FlirCam();
+    $(window).on("load", function () {
+        window.FlirCam.init();
+    });
+</script>
+
+</body>
+</html>

@@ -5,7 +5,7 @@
 #include <QFileInfo>
 #include "Config.h"
 #include "CmdServer.h"
-
+#include "MjpegServer.h"
 #include "LeptonThread.h"
 #include "UsbCamThread.h"
 #include "MyLabel.h"
@@ -79,6 +79,9 @@ int main(int argc, char **argv)
         );
         layout->addWidget(myLabel);
         myLabel->setConfig(cfg);
+        static MjpegServer* http = nullptr;
+        http = new MjpegServer(myLabel, &cfg, 8080, w);
+        qDebug() << "HTTP MJPEG on port 8080";
         CmdServer *cmd = new CmdServer(
             "/tmp/lepton_cmd",
             cfgPath,
